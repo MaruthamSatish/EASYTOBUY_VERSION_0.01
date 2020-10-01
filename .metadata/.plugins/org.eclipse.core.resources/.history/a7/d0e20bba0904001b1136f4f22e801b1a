@@ -1,0 +1,5 @@
+FROM openjdk:8-jre-alpine
+WORKDIR /temp
+EXPOSE 9092
+Add target/COUPON-API-V1-0.0.1-SNAPSHOT.jar COUPON-API-V1-0.0.1-SNAPSHOT.jar
+ENTRYPOINT [ "java","-jar","COUPON-API-V1-0.0.1-SNAPSHOT.jar" ]
