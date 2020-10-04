@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,9 +28,13 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
  */
 @RestController
 @RequestMapping("/api")
+@CrossOrigin("http://localhost:4200")
 public class ProductRestController {
 	@Autowired
 	private CouponProxy couponProxy;
+	
+	@Autowired
+	private CategoryProxy categoryProxy;
 
 	@Autowired
 	private ProductRepository productRepository;
@@ -57,7 +62,9 @@ public class ProductRestController {
 		try {
 			//Get Discount By CouponCode
 			List<Coupon> getCouponsByCode=couponProxy.findByCouponCode(products.getCouponCode());
+			List<Category> getCategoryByName=categoryProxy.findByCategoryName(products.getCouponCode());
 			double discountPrice=getCouponsByCode.stream().findFirst().get().getDiscount();
+		    products.setCategoryId(getCategoryByName.stream().findFirst().get().getCategoryId());
 			products.setProductPrice(products.getProductPrice()-discountPrice);
 			productRepository.save(products);
 			return new ResponseEntity<Product>(products, HttpStatus.CREATED);

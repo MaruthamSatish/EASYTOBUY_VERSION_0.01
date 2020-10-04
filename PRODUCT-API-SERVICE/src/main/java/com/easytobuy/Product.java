@@ -6,6 +6,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import net.bytebuddy.implementation.bytecode.constant.IntegerConstant;
+
 @Entity
 @Table(name = "product")
 public class Product {
@@ -20,6 +22,8 @@ private String productDescription;
 private Double productPrice;
 @Column(name = "couponCode")
 private String couponCode;
+
+private Integer CategoryId;
 public Long getProductId() {
 	return productId;
 }
@@ -50,5 +54,12 @@ public String getCouponCode() {
 public void setCouponCode(String couponCode) {
 	this.couponCode = couponCode;
 }
+public Integer getCategoryId() {
+	return CategoryId;
+}
+public void setCategoryId(Integer categoryId) {
+	CategoryId = categoryId;
+}
+
 
 }
