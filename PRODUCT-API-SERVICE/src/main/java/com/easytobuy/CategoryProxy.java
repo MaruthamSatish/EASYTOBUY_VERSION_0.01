@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author SatishReddy
  *
  */
-@FeignClient("category-api")
+@FeignClient(name = "category-api")
 public interface CategoryProxy {
 	@RequestMapping(value = "/api/categories/{categoryName}", method = RequestMethod.GET)
 	List<Category> findByCategoryName(@PathVariable("categoryName")String categoryName);

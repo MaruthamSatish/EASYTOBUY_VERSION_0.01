@@ -28,7 +28,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
  */
 @RestController
 @RequestMapping("/api")
-@CrossOrigin("http://localhost:4200")
+
 public class ProductRestController {
 	@Autowired
 	private CouponProxy couponProxy;
@@ -39,7 +39,7 @@ public class ProductRestController {
 	@Autowired
 	private ProductRepository productRepository;
 
-	@RequestMapping(value = "/Products/{productId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/products/{productId}", method = RequestMethod.GET)
 	public ResponseEntity<List<Product>> findByProductCode(@PathVariable("productId") Long productId) {
 		Optional<Product> getProduct = productRepository.findById(productId);
 		if (getProduct.isPresent()) {
@@ -62,7 +62,7 @@ public class ProductRestController {
 		try {
 			//Get Discount By CouponCode
 			List<Coupon> getCouponsByCode=couponProxy.findByCouponCode(products.getCouponCode());
-			List<Category> getCategoryByName=categoryProxy.findByCategoryName(products.getCouponCode());
+			List<Category> getCategoryByName=categoryProxy.findByCategoryName(products.getCategoryName());
 			double discountPrice=getCouponsByCode.stream().findFirst().get().getDiscount();
 		    products.setCategoryId(getCategoryByName.stream().findFirst().get().getCategoryId());
 			products.setProductPrice(products.getProductPrice()-discountPrice);
@@ -88,5 +88,12 @@ public class ProductRestController {
 		} else {
 			return HttpStatus.NOT_FOUND;
 		}
+	}
+	@GetMapping("/products/category/{categoryId}")
+	public ResponseEntity<List<Product>> findByCategoryId(@PathVariable("categoryId") Integer categoryId) {
+		List<Product> getProductsByCategoryId = productRepository.findByCategoryId(categoryId);
+		/* getProductsByCategoryId.stream().collect(Collectors.toList()); */
+		return new ResponseEntity<List<Product>>(getProductsByCategoryId, HttpStatus.OK);
+
 	}
 }
