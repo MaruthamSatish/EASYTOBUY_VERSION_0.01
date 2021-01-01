@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-
 /**
  * @author SatishReddy
  *
@@ -58,7 +56,7 @@ public class ProductRestController {
 	}
 
 	@PostMapping("/products")
-	@HystrixCommand(fallbackMethod = "couponProxy")
+	
 	public ResponseEntity<Product> saveProduct(@RequestBody Product products) {
 		try {
 			//Get Discount By CouponCode

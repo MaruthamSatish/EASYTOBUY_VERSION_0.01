@@ -14,7 +14,7 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.MySQL5Dialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: update  boot:    admin:      client:        url:        - http://localhost:9095
       
 eureka:
   client:
@@ -24,3 +24,9 @@ eureka:
   instance:
     preferIpAddress: true
     hostname: localhost
+    
+management:  endpoints:    web:      exposure:        exclude:        - "*"   endpoint:    health:      show-details: always
+      
+
+
+
